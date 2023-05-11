@@ -1,60 +1,39 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const bodyParser = require('body-parser');
-const webrtc = require("wrtc");
+const server = require("http").Server(app);
+const { v4: uuidv4 } = require("uuid");
+app.set("view engine", "ejs");
+const io = require("socket.io")(server, {
+  cors: {
+    origin: '*'
+  }
+});
+const { ExpressPeerServer } = require("peer");
+const opinions = {
+  debug: true,
+}
 
-let senderStream;
+app.use("/peerjs", ExpressPeerServer(server, opinions));
+app.use(express.static("public"));
 
-app.use(express.static('public'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-app.post("/consumer", async ({ body }, res) => {
-    console.log("post consumer")
-    const peer = new webrtc.RTCPeerConnection({
-        iceServers: [
-            {
-                urls: "stun:stun.stunprotocol.org"
-            }
-        ]
-    });
-    const desc = new webrtc.RTCSessionDescription(body.sdp);
-    await peer.setRemoteDescription(desc);
-    console.log(senderStream.getTracks(),"senderStream")
-    senderStream.getTracks().forEach(track => peer.addTrack(track, senderStream));
-    const answer = await peer.createAnswer();
-    await peer.setLocalDescription(answer);
-    const payload = {
-        sdp: peer.localDescription
-    }
-
-    res.json(payload);
+app.get("/", (req, res) => {
+  res.redirect(`/${uuidv4()}`);
 });
 
-app.post('/broadcast', async ({ body }, res) => {
-    const peer = new webrtc.RTCPeerConnection({
-        iceServers: [
-            {
-                urls: "stun:stun.stunprotocol.org"
-            }
-        ]
-    });
-    peer.ontrack = (e) => handleTrackEvent(e, peer);
-    const desc = new webrtc.RTCSessionDescription(body.sdp);
-    await peer.setRemoteDescription(desc);
-    const answer = await peer.createAnswer();
-    await peer.setLocalDescription(answer);
-    const payload = {
-        sdp: peer.localDescription
-    }
-
-    res.json(payload);
+app.get("/:room", (req, res) => {
+  res.render("room", { roomId: req.params.room });
 });
 
-function handleTrackEvent(e, peer) {
-    console.log("handling")
-    senderStream = e.streams[0];
-};
+io.on("connection", (socket) => {
+  socket.on("join-room", (roomId, userId, userName) => {
+    socket.join(roomId);
+    setTimeout(()=>{
+      socket.to(roomId).broadcast.emit("user-connected", userId);
+    }, 1000)
+    socket.on("message", (message) => {
+      io.to(roomId).emit("createMessage", message, userName);
+    });
+  });
+});
 
-
-app.listen(5000, () => console.log('server started'));
+server.listen(process.env.PORT || 3030);
