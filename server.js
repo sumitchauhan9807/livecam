@@ -51,6 +51,7 @@ app.post('/broadcast', async ({ body }, res) => {
 });
 
 function handleTrackEvent(e, peer) {
+    console.log("handling")
     senderStream = e.streams[0];
 };
 
