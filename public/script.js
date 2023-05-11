@@ -22,7 +22,7 @@ showChat.addEventListener("click", () => {
 const user = prompt("Enter your name");
 
 var peer = new Peer({
-  host: 'https://cam.porntool.live/',
+  host: 'cam.porntool.live',
   // port: 3030,
   path: '/peerjs',
   config: {
