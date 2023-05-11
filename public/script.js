@@ -22,8 +22,8 @@ showChat.addEventListener("click", () => {
 const user = prompt("Enter your name");
 
 var peer = new Peer({
-  host: 'cam.porntool.live',
-  // port: 3030,
+  host: '127.0.0.1',
+  port: 5000,
   path: '/peerjs',
   config: {
     'iceServers': [
@@ -52,6 +52,11 @@ var peer = new Peer({
   debug: 3
 });
 
+peer.on('connection', (client) => { 
+  console.log(client)
+  console.log("someone connected")
+ });
+
 let myVideoStream;
 navigator.mediaDevices
   .getUserMedia({
@@ -72,6 +77,7 @@ navigator.mediaDevices
     });
 
     socket.on("user-connected", (userId) => {
+      console.log("comeone conne")
       connectToNewUser(userId, stream);
     });
   });

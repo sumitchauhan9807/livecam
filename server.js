@@ -12,17 +12,20 @@ const { ExpressPeerServer } = require("peer");
 const opinions = {
   debug: true,
 }
-
-app.use("/peerjs", ExpressPeerServer(server, opinions));
+let peerServer = ExpressPeerServer(server, opinions)
+app.use("/peerjs", peerServer);
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
   res.redirect(`/${uuidv4()}`);
 });
-
+app.get("/consumer", (req, res) => {
+  res.sendFile((__dirname + '/views/consumer.html'))
+});
 app.get("/:room", (req, res) => {
   res.render("room", { roomId: req.params.room });
 });
+
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId, userId, userName) => {
@@ -36,4 +39,9 @@ io.on("connection", (socket) => {
   });
 });
 
+//  peerServer.on('disconnect', (client) => { 
+//   console.log(client)
+
+//   console.log("someone dic")
+//  });
 server.listen(process.env.PORT || 5000);
