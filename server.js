@@ -10,6 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/consumer", async ({ body }, res) => {
+    console.log("post consumer")
     const peer = new webrtc.RTCPeerConnection({
         iceServers: [
             {
