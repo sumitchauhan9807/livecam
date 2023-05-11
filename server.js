@@ -20,6 +20,7 @@ app.post("/consumer", async ({ body }, res) => {
     });
     const desc = new webrtc.RTCSessionDescription(body.sdp);
     await peer.setRemoteDescription(desc);
+    console.log(senderStream,"senderStream")
     senderStream.getTracks().forEach(track => peer.addTrack(track, senderStream));
     const answer = await peer.createAnswer();
     await peer.setLocalDescription(answer);
