@@ -1,4 +1,4 @@
-const PRODUCTION = true;
+const PRODUCTION = false;
 const videoGrid = document.getElementById("video-grid");
 const socket = io("/");
 const user = prompt("Enter your name");

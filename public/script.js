@@ -1,3 +1,4 @@
+const PRODUCTION = false;
 const socket = io("/");
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
@@ -20,7 +21,6 @@ showChat.addEventListener("click", () => {
 });
 
 const user = prompt("Enter your name");
-const PRODUCTION = true;
 
 var peer = new Peer({
   host: PRODUCTION ? 'cam.porntool.live' : 'localhost', 
