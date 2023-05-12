@@ -20,7 +20,7 @@ showChat.addEventListener("click", () => {
 });
 
 const user = prompt("Enter your name");
-const PRODUCTION = false;
+const PRODUCTION = true;
 
 var peer = new Peer({
   host: PRODUCTION ? 'cam.porntool.live' : 'localhost', 
