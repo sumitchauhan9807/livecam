@@ -53,6 +53,8 @@ peer.on("call", (call) => {
 const addVideoStream = (video, stream) => {
   video.srcObject = stream;
   video.muted = true
+  video.setAttribute("controls", "controls");
+
   video.addEventListener("loadedmetadata", () => {
     video.play();
     videoGrid.append(video);
