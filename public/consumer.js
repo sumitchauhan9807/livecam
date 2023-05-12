@@ -38,16 +38,11 @@ peer.on("open", (id) => {
 });
 peer.on("call", (call) => {
   console.log('someone call me');
-  if (confirm('join live stream') == true) {
-    call.answer(null);
-    const video = document.createElement("video");
-    call.on("stream", (userVideoStream) => {
-      addVideoStream(video, userVideoStream);
-    });
-  } else {
-    
-  }
-
+  call.answer(null);
+  const video = document.createElement("video");
+  call.on("stream", (userVideoStream) => {
+    addVideoStream(video, userVideoStream);
+  });
 });
 
 const addVideoStream = (video, stream) => {
