@@ -20,15 +20,21 @@ app.get("/", (req, res) => {
   res.redirect(`/${uuidv4()}`);
 });
 app.get("/consumer", (req, res) => {
-  res.sendFile((__dirname + '/views/consumer.html'))
+  res.sendFile((__dirname + '/views/consumer2.html'))
+});
+app.get("/consumer2", (req, res) => {
+  res.sendFile((__dirname + '/views/consumer2.html'))
 });
 app.get("/:room", (req, res) => {
-  res.render("room", { roomId: req.params.room });
+  res.sendFile((__dirname + '/views/room.html'))
+
 });
 
 
 io.on("connection", (socket) => {
   socket.on("join-room", (roomId, userId, userName) => {
+    console.log(roomId,userId,userName,"join-room")
+
     socket.join(roomId);
     setTimeout(()=>{
       socket.to(roomId).broadcast.emit("user-connected", userId);

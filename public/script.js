@@ -20,10 +20,11 @@ showChat.addEventListener("click", () => {
 });
 
 const user = prompt("Enter your name");
+const PRODUCTION = false;
 
 var peer = new Peer({
-  host: 'cam.porntool.live',
-  // port: 5000,
+  host: PRODUCTION ? 'cam.porntool.live' : 'localhost', 
+  ...(!PRODUCTION) && {port: 5000},
   path: '/peerjs',
   config: {
     'iceServers': [
@@ -67,16 +68,17 @@ navigator.mediaDevices
     myVideoStream = stream;
     addVideoStream(myVideo, stream);
 
-    peer.on("call", (call) => {
-      console.log('someone call me');
-      call.answer(stream);
-      const video = document.createElement("video");
-      call.on("stream", (userVideoStream) => {
-        addVideoStream(video, userVideoStream);
-      });
-    });
+    // peer.on("call", (call) => {
+    //   console.log('someone call me');
+    //   call.answer(stream);
+    //   const video = document.createElement("video");
+    //   call.on("stream", (userVideoStream) => {
+    //     addVideoStream(video, userVideoStream);
+    //   });
+    // });
 
     socket.on("user-connected", (userId) => {
+      // alert('someone conn')
       console.log("comeone conne")
       connectToNewUser(userId, stream);
     });
@@ -93,7 +95,7 @@ const connectToNewUser = (userId, stream) => {
 
 peer.on("open", (id) => {
   console.log('my id is' + id);
-  socket.emit("join-room", ROOM_ID, id, user);
+  socket.emit("join-room", 'model', id, user);
 });
 
 const addVideoStream = (video, stream) => {
