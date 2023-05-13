@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 
 router.get('/',userAuth,(req,res,next)=>{
-  res.send("herrrlo")
+  res.send(req.userData)
 })
 
 
