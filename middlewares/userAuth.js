@@ -16,17 +16,18 @@ router.use(async (req, res, next) => {
       return next({ status: 401, message: "Authentication required" });
     } else if (token) {
       // verifies secret and checks exp
+      console.log(process.env.JWT_KEY)
+      console.log(token)
       jwt.verify(
         token,
-        process.env.JWT_SECRET,
+        process.env.JWT_KEY,
         {
           ignoreExpiration: true,
         },
         async (err, decoded) => {
-          console.log(process.env.JWT_SECRET)
-          console.log(token)
+          console.log(err)
           if (err) {
-            return next({ status: 401, message: "Authentication failed" });
+            return next({ status: 401, message: err });
           }
           req.userData = decoded
           return next();
