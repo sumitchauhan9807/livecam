@@ -1,7 +1,16 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
+app.use(cors({
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+}));
 require("dotenv").config();
 const bodyParser = require("body-parser");
+app.use((req, res, next) => {
+    bodyParser.json()(req, res, next);
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 const server = require("http").Server(app);
 const { v4: uuidv4 } = require("uuid");
