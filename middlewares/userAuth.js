@@ -30,6 +30,7 @@ router.use(async (req, res, next) => {
             return next({ status: 401, message: err });
           }
           req.userData = decoded
+          req.token = req.headers["authorization"].substring(7)
           return next();
         }
       );
