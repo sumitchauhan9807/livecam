@@ -1,5 +1,9 @@
-const PRODUCTION = true;
+const PRODUCTION = false;
 const socket = io("/");
+socket.on("connect", () => {
+  console.log(socket)
+  console.log("CONNECTEDDDD")
+});
 const videoGrid = document.getElementById("video-grid");
 const myVideo = document.createElement("video");
 const showChat = document.querySelector("#showChat");
@@ -100,6 +104,7 @@ const connectToNewUser = (userId, stream) => {
 peer.on("open", (id) => {
   console.log('my id is' + id);
   socket.emit("join-room", 'model', id, user);
+  console.log(socket.connected)
 });
 
 const addVideoStream = (video, stream) => {
