@@ -1,4 +1,4 @@
-const PRODUCTION = false;
+const PRODUCTION = true;
 const socket = io("/");
 socket.on("connect", () => {
   console.log(socket)
