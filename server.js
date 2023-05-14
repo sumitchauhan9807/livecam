@@ -17,11 +17,11 @@ const { v4: uuidv4 } = require("uuid");
 const peerFunctions = require('./peer').peerFunctions;
 const routes = require('./router')
 app.set("view engine", "ejs");
-const io = require("socket.io")(server, {
-  cors: {
-    origin: '*'
-  }
-});
+// const io = require("socket.io")(server, {
+//   cors: {
+//     origin: '*'
+//   }
+// });
 const { ExpressPeerServer } = require("peer");
 const opinions = {
   debug: true,
@@ -58,19 +58,19 @@ app.get("/:room", (req, res) => {
 
 });
 
-io.on("connection", (socket) => {
-  socket.on("join-room", (roomId, userId, userName) => {
-    // console.log(roomId,userId,userName,"join-room")
+// io.on("connection", (socket) => {
+//   socket.on("join-room", (roomId, userId, userName) => {
+//     // console.log(roomId,userId,userName,"join-room")
 
-    socket.join(roomId);
-    setTimeout(()=>{
-      socket.to(roomId).broadcast.emit("user-connected", userId);
-    }, 1000)
-    socket.on("message", (message) => {
-      io.to(roomId).emit("createMessage", message, userName);
-    });
-  });
-});
+//     socket.join(roomId);
+//     setTimeout(()=>{
+//       socket.to(roomId).broadcast.emit("user-connected", userId);
+//     }, 1000)
+//     socket.on("message", (message) => {
+//       io.to(roomId).emit("createMessage", message, userName);
+//     });
+//   });
+// });
 
 //  peerServer.on('disconnect', (client) => { 
 //   console.log(client)
