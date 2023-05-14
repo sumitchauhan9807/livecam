@@ -30,10 +30,22 @@ let peerServer = ExpressPeerServer(server, opinions);
 peerFunctions(peerServer)
 app.use("/peerjs", peerServer);
 app.use(express.static("public"));
+app.use('/img', express.static('vue/img'));
+app.use('/css', express.static('vue/css'));
+app.use('/js', express.static('vue/js'));
 app.use('/api', routes)
 
-app.get("/", (req, res) => {
-  res.redirect(`/${uuidv4()}`);
+// app.get("/webcam", (req, res) => {
+//   res.redirect(`/${uuidv4()}`);
+// });
+
+
+app.get([
+  "/",
+  "/modelcam/:username",
+  "/livecam/:username"
+], (req, res) => {
+  res.sendFile((__dirname + '/vue/index.html'))
 });
 app.get("/consumer", (req, res) => {
   res.sendFile((__dirname + '/views/consumer2.html'))
