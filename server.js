@@ -25,6 +25,7 @@ app.set("view engine", "ejs");
 const { ExpressPeerServer } = require("peer");
 const opinions = {
   debug: true,
+  alive_timeout:6000000000
 }
 let peerServer = ExpressPeerServer(server, opinions);
 peerFunctions(peerServer)
