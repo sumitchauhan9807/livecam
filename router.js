@@ -44,6 +44,20 @@ router.post('/identify',userAuth,async (req,res,next) => {
   }
 })
 
+router.get('/onlinemodels',(req,res,next)=>{
+  let onlineModels = peerManager.getOnlineModels()
+  res.send({
+    onlineModels:onlineModels
+  })
+})
+
+router.post('/modelpeerinfo',(req,res,next)=>{
+  let modelInfo = peerManager.getModelId(req.body.username)
+  res.send({
+    modelInfo:modelInfo
+  })
+})
+
 
 router.get('/allpeers',(req,res,next)=>{
   let allPeers = peerManager.getOnlinePeers()

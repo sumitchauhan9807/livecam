@@ -26,6 +26,14 @@ exports.getOnlinePeers = () => {
   return onlinePeers
 }
 
+exports.getOnlineModels = () => {
+  return onlinePeers.filter(peer => peer.usrType == 'model')
+}
+
+exports.getModelId = (username) => {
+  return onlinePeers.find(peer => peer.username == username)
+}
+
 exports.setPeerMeta = ({peerId,usrType,username}) => {
   const index = onlinePeers.findIndex(peer => peer.peerId == peerId)
   console.log(index,"indexx")
